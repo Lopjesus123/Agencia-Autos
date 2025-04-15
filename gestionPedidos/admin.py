@@ -19,10 +19,9 @@ class AutoAdmin(admin.ModelAdmin):
 
 @admin.register(Venta)
 class VentaAdmin(admin.ModelAdmin):
-    list_display = ('cliente', 'auto', 'fecha', 'Empleado', 'MetodoPago')
-    list_filter = ('fecha', 'Empleado', 'MetodoPago')
-    search_fields = ('cliente__nombre', 'auto__marca', 'Empleado__nombre')
-    date_hierarchy = 'fecha'
+    list_display = ('id', 'cliente', 'auto', 'empleado', 'metodo_pago')
+    list_filter = ('cliente', 'empleado', 'metodo_pago')
+
 
 @admin.register(Empleado)
 class EmpleadoAdmin(admin.ModelAdmin):
@@ -32,5 +31,4 @@ class EmpleadoAdmin(admin.ModelAdmin):
 @admin.register(MetodoPago)
 class MetodoPagoAdmin(admin.ModelAdmin):
     list_display = ('tipo',)
-
 

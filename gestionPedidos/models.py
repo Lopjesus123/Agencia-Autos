@@ -1,34 +1,49 @@
 from django.db import models
 
-# Create your models here.
-
 class Clientes(models.Model):
-    nombre=models.CharField(max_length=30)
-    direccion=models.CharField(max_length=50)
-    email=models.EmailField()
-    telefono=models.CharField(max_length=10)
+    nombre = models.CharField(max_length=30)
+    direccion = models.CharField(max_length=50)
+    email = models.EmailField()
+    telefono = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f"{self.nombre} ({self.email})"
+
 
 class Auto(models.Model):
     marca = models.CharField(max_length=30)
     modelo = models.CharField(max_length=30)
     año = models.IntegerField()
     precio = models.IntegerField()
-    disponible = models.BooleanField(default=True)  # <- esto es clave
+    disponible = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.marca} {self.modelo} ({self.año})"
+
+
+class Empleado(models.Model):
+    nombre = models.CharField(max_length=50)
+    puesto = models.CharField(max_length=30)
+    email = models.EmailField()
+    telefono = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f"{self.nombre} - {self.puesto}"
+
+
+class MetodoPago(models.Model):
+    tipo = models.CharField(max_length=30)  # Efectivo, Transferencia, Tarjeta
+
+    def __str__(self):
+        return self.tipo
+
 
 class Venta(models.Model):
     cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
     auto = models.ForeignKey(Auto, on_delete=models.CASCADE)
     fecha = models.DateField()
-    Empleado = models.ForeignKey("Empleado", on_delete=models.SET_NULL, null=True) #Lo traduces así: “Esta venta fue realizada por X empleado.”
-    MetodoPago = models.ForeignKey("MetodoPago", on_delete=models.SET_NULL, null=True)
+    empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True)
+    metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.SET_NULL, null=True)
 
-class Empleado(models.Model):
-    nombre = models.CharField(max_length=50)
-    puesto = models.CharField(max_length=30)
-    email = models.CharField()
-    telefono= models.CharField(max_length=15)
-
-class MetodoPago(models.Model):
-    tipo = models.CharField(max_length=30) #Efectivo,Trasferencia,Tarjeta
-
-
+    def __str__(self):
+        return f"Venta #{self.id} - {self.cliente.nombre} compró {self.auto.modelo}"
