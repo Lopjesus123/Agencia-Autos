@@ -46,4 +46,7 @@ class Venta(models.Model):
     metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"Venta #{self.id} - {self.cliente.nombre} compró {self.auto.modelo}"
+        return f"{self.fecha} - {self.cliente.nombre} compró {self.auto.marca} {self.auto.modelo} ({self.auto.año}) por medio de {self.empleado.nombre}"
+
+
+
